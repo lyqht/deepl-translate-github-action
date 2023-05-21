@@ -46,6 +46,10 @@ runs:
       no_translate_end_tag: ${{ inputs.no_translate_end_tag }}
     run: |
       cd ${{github.action_path}} && yarn install && yarn start
+  - name: remove unused temp file
+    shell: bash
+    run: |
+      rm to_translate.txt
   - uses: stefanzweifel/git-auto-commit-action@v4
     with:
       commit_message: translation
