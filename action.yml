@@ -1,0 +1,55 @@
+name: 'DeepL Translate Github Action'
+author: 'Estee Tey'
+description: 'Translate any document using DeepL Translate API'
+
+inputs:
+  target_languages:
+    description: "Target languages to translate to"
+    required: true
+  input_file_path:
+    description: "Path of the file you want to translate"
+    required: true
+  output_file_name_prefix:
+    description: "Prefix of the output file name, including the folder name"
+    required: false
+  deepl_api_key:
+    description: "API Key for DeepL API"
+    required: true
+  ignore_terms:
+    description: "Terms to ignore when translating"
+    required: false
+  no_translate_start_tag:
+    description: "Start tag to ignore when translating"
+    required: false
+    default: <!-- notranslate -->
+  no_translate_end_tag:
+    description: "End tag to ignore when translating"
+    required: false
+    default: <!-- /notranslate -->
+
+runs:
+  using: composite
+  steps:
+  - name: Checkout
+    uses: actions/checkout@v3
+  - name: Set up node
+    uses: actions/setup-node@v3
+  - name: Run translation script
+    shell: bash
+    env:
+      target_languages: ${{ inputs.target_languages }}
+      input_file_path: ${{ inputs.input_file_path }}
+      output_file_name_prefix: ${{ inputs.output_file_name_prefix }}
+      deepl_api_key: ${{ inputs.deepl_api_key }}
+      ignore_terms: ${{ inputs.ignore_terms }}
+      no_translate_start_tag: ${{ inputs.no_translate_start_tag }}
+      no_translate_end_tag: ${{ inputs.no_translate_end_tag }}
+    run: |
+      cd ${{github.action_path}} && yarn install && yarn start
+  - uses: stefanzweifel/git-auto-commit-action@v4
+    with:
+      commit_message: translation
+      
+branding:
+  icon: 'activity'
+  color: 'blue'

@@ -1,0 +1,18 @@
+{
+  "name": "deepl-demo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Estee <estee.tsw@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node index.ts"
+  },
+  "dependencies": {
+    "deepl-node": "^1.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.1.4",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  }
+}
