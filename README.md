@@ -54,6 +54,8 @@ jobs:
           deepl_api_key: ${{ secrets.DEEPL_API_KEY }} 
 ```
 
+With this workflow, you will get `docs/simple/zh.md` and `docs/simple/ja.md`
+
 ## Demo
 
 For a demo, refer to Example 1 in this repository [deepl-demo](https://github.com/lyqht/deepl-demo).
