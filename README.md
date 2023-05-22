@@ -47,4 +47,4 @@ This will translate the README.md file into Chinese and Japanese, and save them 
 
 ## Demo
 
-For a demo, refer to this repository [deepl-demo](https://github.com/lyqht/deepl-demo).
+For a demo, refer to Example 1 in this repository [deepl-demo](https://github.com/lyqht/deepl-demo).
