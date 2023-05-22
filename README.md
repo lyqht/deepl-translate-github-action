@@ -11,8 +11,8 @@ This action uses the DeepL Translate API to translate text files in your reposit
 | `input_file_path`     | Path of the file you want to translate           |   yes    |         |  
 | `output_file_name_prefix` | Prefix of the output file name, including folder name |   no     |         |
 | `ignore_terms`        | Terms to ignore when translating                 |   no     |         |  
-| `no_translate_start_tag` | Start tag to ignore when translating           |   no     |  <!-- notranslate -->  |
-| `no_translate_end_tag`   | End tag to ignore when translating                |   no     | <!-- /notranslate --> |
+| `no_translate_start_tag` | Start tag to ignore when translating           |   no     |  `<!-- notranslate -->`  |
+| `no_translate_end_tag`   | End tag to ignore when translating                |   no     | `<!-- /notranslate -->` |
 
 
 ## How to use
