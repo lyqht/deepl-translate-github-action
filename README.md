@@ -35,15 +35,24 @@ First, you need to [sign up for a DeepL account](https://www.deepl.com/). Then y
 ## Example usage
 
 ```yaml
-- name: Translate Readme
-  uses: lyqht/deepl-translate-action@v1
-  with:
-    target_languages: 'zh,ja'
-    input_file_path: 'README.md'
-    output_file_name_prefix: 'docs/README.'  
-```
+name: Translate documents from docs/simple folder 
+on: 
+  workflow_dispatch: 
+  pull_request: 
+    types: [opened, synchronize] 
 
-This will translate the README.md file into Chinese and Japanese, and save them as `docs/README.zh.md` and `docs/README.ja.md`.
+jobs:
+  build: 
+    runs-on: ubuntu-latest
+    steps: 
+      - name: DeepL Translate Github Action 
+        uses: lyqht/deepl-translate-github-action@v1.0.0
+        with: 
+          target_languages: zh,ja 
+          input_file_path: docs/simple/original.md 
+          output_file_name_prefix: docs/simple/
+          deepl_api_key: ${{ secrets.DEEPL_API_KEY }} 
+```
 
 ## Demo
 
