@@ -1,6 +1,6 @@
 # DeepL Translate Github Action 
 
-This action uses the DeepL Translate API to translate text files in your repository to your target languages. The output will follow the file extension of the given input file.
+This action uses the [DeepL Translate API](https://github.com/DeepLcom/deepl-node) to translate text files in your repository to your target languages. The output will follow the file extension of the given input file.
 
 ## Inputs
 
