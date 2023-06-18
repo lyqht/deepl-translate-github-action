@@ -109,7 +109,7 @@ function replaceAll(str: string, search: string, replacement: string): string {
 					"",
 				);
 
-                const outputFileName = `${outputFileNamePrefix}${targetLang}.${fileExtension}`;
+                const outputFileName = `${outputFileNamePrefix}${targetLang}${fileExtension}`;
 				fs.writeFile(
 					outputFileName,
 					textWithNoTranslateEndTagReplaced,
@@ -156,7 +156,7 @@ function replaceAll(str: string, search: string, replacement: string): string {
 
                 for (const targetLanguage of targetLanguages) {
 					const targetLang = targetLanguage as deepl.TargetLanguageCode;
-                    const outputFileName = `${outputFileNamePrefix}${targetLang}.${fileExtension}`;
+                    const outputFileName = `${outputFileNamePrefix}${targetLang}${fileExtension}`;
                     const resultJson = JSON.stringify(translatedResults[targetLang]);
                     fs.writeFile(
                         outputFileName,
