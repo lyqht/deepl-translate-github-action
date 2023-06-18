@@ -131,7 +131,7 @@ function replaceAll(str: string, search: string, replacement: string): string {
 				const inputJson = JSON.parse(jsonString);
 				const keys = Object.keys(inputJson);
 
-                const translatedResults = {}
+                const translatedResults: Partial<Record<deepl.TargetLanguageCode, Record<string, string>>> = {}
 				for (const key of keys) {
 					const value = inputJson[key];
 
@@ -150,11 +150,12 @@ function replaceAll(str: string, search: string, replacement: string): string {
                         if (!translatedResults[targetLang]) {
                             translatedResults[targetLang] = {};
                         }
-                        translatedResults[targetLang][key] = textResult.text;
+                        translatedResults[targetLang]![key] = textResult.text;
 					}
 				}
 
-                for (const targetLang of targetLanguages) {
+                for (const targetLanguage of targetLanguages) {
+					const targetLang = targetLanguage as deepl.TargetLanguageCode;
                     const outputFileName = `${outputFileNamePrefix}${targetLang}.${fileExtension}`;
                     const resultJson = JSON.stringify(translatedResults[targetLang]);
                     fs.writeFile(
