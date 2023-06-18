@@ -37,37 +37,38 @@ function replaceAll(str: string, search: string, replacement: string): string {
 		fileExtensionsThatAllowForIgnoringBlocks.includes(fileExtension);
 
 	if (isFileHtmlLike) {
+		let textToBeWrittenToTempFile = "";
 		fs.readFile(inputFilePath, "utf8", async function (err, text) {
 			if (err) {
 				return console.log(err);
 			}
 
-            if (termsToIgnoreForTranslation.length > 0) {
+			if (startTagForNoTranslate && endTagForNoTranslate) {
+				const textWithNoTranslateStartTagReplaced = replaceAll(
+					text,
+					startTagForNoTranslate,
+					"<keep>",
+				);
+				const textWithNoTranslateEndTagReplaced = replaceAll(
+					textWithNoTranslateStartTagReplaced,
+					endTagForNoTranslate,
+					"</keep>",
+				);
 
-                termsToIgnoreForTranslation.forEach((term) => {
-                    text = text.replace(new RegExp(term, "g"), `<keep>${term}</keep>`);
-                });
-
-                const textWithNoTranslateStartTagReplaced = replaceAll(
-                    text,
-                    startTagForNoTranslate,
-                    "<keep>",
-                );
-                const textWithNoTranslateEndTagReplaced = replaceAll(
-                    textWithNoTranslateStartTagReplaced,
-                    endTagForNoTranslate,
-                    "</keep>",
-                );
-                fs.writeFile(
-                    tempFilePath,
-                    textWithNoTranslateEndTagReplaced,
-                    function (err) {
-                        if (err) return console.log(err);
-                        console.log(`Created file to be translated`);
-                    },
-                );
-            }
-
+				textToBeWrittenToTempFile = textWithNoTranslateEndTagReplaced;
+			}
+			if (termsToIgnoreForTranslation.length > 0) {
+				termsToIgnoreForTranslation.forEach((term) => {
+					textToBeWrittenToTempFile = textToBeWrittenToTempFile.replace(
+						new RegExp(term, "g"),
+						`<keep>${term}</keep>`,
+					);
+				});
+			}
+			fs.writeFile(tempFilePath, textToBeWrittenToTempFile, function (err) {
+				if (err) return console.log(err);
+				console.log(`Created file to be translated`);
+			});
 		});
 
 		const tempFileExists = fs.existsSync(tempFilePath);
@@ -109,7 +110,7 @@ function replaceAll(str: string, search: string, replacement: string): string {
 					"",
 				);
 
-                const outputFileName = `${outputFileNamePrefix}${targetLang}${fileExtension}`;
+				const outputFileName = `${outputFileNamePrefix}${targetLang}${fileExtension}`;
 				fs.writeFile(
 					outputFileName,
 					textWithNoTranslateEndTagReplaced,
@@ -131,43 +132,40 @@ function replaceAll(str: string, search: string, replacement: string): string {
 				const inputJson = JSON.parse(jsonString);
 				const keys = Object.keys(inputJson);
 
-                const translatedResults: Partial<Record<deepl.TargetLanguageCode, Record<string, string>>> = {}
+				const translatedResults: Partial<
+					Record<deepl.TargetLanguageCode, Record<string, string>>
+				> = {};
 				for (const key of keys) {
 					const value = inputJson[key];
 
-                    console.log(
-                        `Translating the input file into ${targetLanguages.length} languages...`,
-                    );
+					console.log(
+						`Translating the input file into ${targetLanguages.length} languages...`,
+					);
 
 					for (const targetLanguage of targetLanguages) {
 						const targetLang = targetLanguage as deepl.TargetLanguageCode;
-						const textResult = await translator.translateText(
+						const textResult = (await translator.translateText(
 							value,
 							null,
 							targetLang,
-						) as deepl.TextResult;
+						)) as deepl.TextResult;
 
-                        if (!translatedResults[targetLang]) {
-                            translatedResults[targetLang] = {};
-                        }
-                        translatedResults[targetLang]![key] = textResult.text;
+						if (!translatedResults[targetLang]) {
+							translatedResults[targetLang] = {};
+						}
+						translatedResults[targetLang]![key] = textResult.text;
 					}
 				}
 
-                for (const targetLanguage of targetLanguages) {
+				for (const targetLanguage of targetLanguages) {
 					const targetLang = targetLanguage as deepl.TargetLanguageCode;
-                    const outputFileName = `${outputFileNamePrefix}${targetLang}${fileExtension}`;
-                    const resultJson = JSON.stringify(translatedResults[targetLang]);
-                    fs.writeFile(
-                        outputFileName,
-                        resultJson,
-                        function (err) {
-                            if (err) return console.log(err);
-                            console.log(`Translated ${targetLang}`);
-                        },
-                    );
-                }
-
+					const outputFileName = `${outputFileNamePrefix}${targetLang}${fileExtension}`;
+					const resultJson = JSON.stringify(translatedResults[targetLang]);
+					fs.writeFile(outputFileName, resultJson, function (err) {
+						if (err) return console.log(err);
+						console.log(`Translated ${targetLang}`);
+					});
+				}
 			} catch (err) {
 				console.log("Error parsing JSON string", err);
 			}
