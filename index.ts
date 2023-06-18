@@ -146,6 +146,10 @@ function replaceAll(str: string, search: string, replacement: string): string {
 							null,
 							targetLang,
 						) as deepl.TextResult;
+
+                        if (!translatedResults[targetLang]) {
+                            translatedResults[targetLang] = {};
+                        }
                         translatedResults[targetLang][key] = textResult.text;
 					}
 				}
