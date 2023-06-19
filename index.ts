@@ -136,7 +136,12 @@ function replaceAll(str: string, search: string, replacement: string): string {
 					Record<deepl.TargetLanguageCode, Record<string, string>>
 				> = {};
 				for (const key of keys) {
-					const value = inputJson[key];
+					const value = inputJson[key] as string;
+					const termRegex = /{[^{}]+}/g;
+					const textToBeTranslated = value.replace(
+						termRegex,
+						(match) => `<keep>${match}</keep>`,
+					);
 
 					console.log(
 						`Translating the input file into ${targetLanguages.length} languages...`,
@@ -145,7 +150,7 @@ function replaceAll(str: string, search: string, replacement: string): string {
 					for (const targetLanguage of targetLanguages) {
 						const targetLang = targetLanguage as deepl.TargetLanguageCode;
 						const textResult = (await translator.translateText(
-							value,
+							textToBeTranslated,
 							null,
 							targetLang,
 						)) as deepl.TextResult;
