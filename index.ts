@@ -30,6 +30,20 @@ function replaceAll(str: string, search: string, replacement: string): string {
 	return str;
 }
 
+function removeKeepTagsFromString(str: string) {
+	const textWithNoTranslateStartTagReplaced = replaceAll(
+		str,
+		"<keep>",
+		"",
+	);
+	const textWithNoTranslateEndTagReplaced = replaceAll(
+		textWithNoTranslateStartTagReplaced,
+		"</keep>",
+		"",
+	);
+	return textWithNoTranslateEndTagReplaced
+}
+
 // main
 (async () => {
 	const fileExtension = path.extname(inputFilePath);
@@ -97,23 +111,12 @@ function replaceAll(str: string, search: string, replacement: string): string {
 				);
 
 				const translatedText = textResult.text;
-
-				// remove added keep tags
-				const textWithNoTranslateStartTagReplaced = replaceAll(
-					translatedText,
-					"<keep>",
-					"",
-				);
-				const textWithNoTranslateEndTagReplaced = replaceAll(
-					textWithNoTranslateStartTagReplaced,
-					"</keep>",
-					"",
-				);
+				const resultText = removeKeepTagsFromString(translatedText)
 
 				const outputFileName = `${outputFileNamePrefix}${targetLang}${fileExtension}`;
 				fs.writeFile(
 					outputFileName,
-					textWithNoTranslateEndTagReplaced,
+					resultText,
 					function (err) {
 						if (err) return console.log(err);
 						console.log(`Translated ${targetLang}`);
@@ -153,12 +156,20 @@ function replaceAll(str: string, search: string, replacement: string): string {
 							textToBeTranslated,
 							null,
 							targetLang,
+							{
+								preserveFormatting: true,
+								tagHandling: "xml",
+								ignoreTags: ["keep"],
+							},
 						)) as deepl.TextResult;
 
 						if (!translatedResults[targetLang]) {
 							translatedResults[targetLang] = {};
 						}
-						translatedResults[targetLang]![key] = textResult.text;
+
+						const translatedText = textResult.text;
+						const resultText = removeKeepTagsFromString(translatedText)
+						translatedResults[targetLang]![key] = resultText;
 					}
 				}
 
