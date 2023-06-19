@@ -6,19 +6,20 @@ This action uses the [DeepL Translate API](https://github.com/DeepLcom/deepl-nod
 
 😎 Since DeepL API does not officially support markdown tag handling yet, it helps to mitigate some issues that DeepL may have when it comes to markdown documents.
 
-✨ Accepts inputs such as **HTML-like files** `.md | .html | .xml`, as well as  **locale JSON** files.
+✨ In v1.0.0, **HTML-like files** such as `.md | .html | .xml` are supported.
+✨ From v2.0.0 onwards, **locale JSON** files are also supported.
 
 ## Inputs
 
-| Name                  | Description                                      | Required | Default |
-| --------------------- | ------------------------------------------------ |:--------:| ------- |
-| `deepl_api_key`       | API Key for DeepL API                            |   yes     |  |
-| `target_languages`    | Target languages to translate to. Refer to [DeepL docs for language codes](https://www.deepl.com/docs-api/translate-text).                 |   yes    |         |
-| `input_file_path`     | Path of the file you want to translate. Accepts `.html, .xml, .md, .json`           |   yes    |         |
-| `output_file_name_prefix` | Prefix of the output file name, including folder name |   no     |         |
-| `ignore_terms`        | Terms to ignore when translating                 |   no     |         |
-| `no_translate_start_tag` | Start tag to ignore when translating in the case of HTML-like files such as `.html, .xml, .md`           |   no     |  `<!-- notranslate -->`  |
-| `no_translate_end_tag`   | End tag to ignore when translating in the case of HTML-like files such as `.html, .xml, .md`.                |   no     | `<!-- /notranslate -->` |
+| Name                  | Description                                      | Required |
+| --------------------- | ------------------------------------------------ |:--------:|
+| `deepl_api_key`       | API Key for DeepL API                            |   yes    |
+| `target_languages`    | Target languages to translate to. Refer to [DeepL docs for language codes](https://www.deepl.com/docs-api/translate-text).                 |   yes    |
+| `input_file_path`     | Path of the file you want to translate. Accepts `.html, .xml, .md, .json`           |   yes    |
+| `output_file_name_prefix` | Prefix of the output file name, including folder name |   no     |
+| `ignore_terms`        | Terms to ignore when translating                 |   no     |
+| `no_translate_start_tag` | Start tag to ignore when translating in the case of HTML-like files such as `.html, .xml, .md`           |   no     |
+| `no_translate_end_tag`   | End tag to ignore when translating in the case of HTML-like files such as `.html, .xml, .md`.                |   no     |
 
 ## Example usage & demo
 
