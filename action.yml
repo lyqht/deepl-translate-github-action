@@ -46,6 +46,14 @@ runs:
       no_translate_end_tag: ${{ inputs.no_translate_end_tag }}
     run: |
       cd ${{github.action_path}} && yarn install && yarn start
+  - name: remove unused temp file if it exists
+    shell: bash
+    run: |
+      if [ -f to_translate.txt ]; then
+        rm to_translate.txt
+      else
+        echo "to_translate.txt does not exist, skipping step"
+      fi
   - uses: stefanzweifel/git-auto-commit-action@v4
     with:
       commit_message: translation
