@@ -1,6 +1,7 @@
 import * as deepl from "deepl-node";
 import fs from "fs";
 import path from "path";
+import { removeKeepTagsFromString, replaceAll } from "./utils";
 
 const authKey = process.env.deepl_api_key as string;
 const translator = new deepl.Translator(authKey);
@@ -21,28 +22,6 @@ const endTagForNoTranslate = process.env.no_translate_end_tag as string;
 const tempFilePath = "to_translate.txt";
 const fileExtensionsThatAllowForIgnoringBlocks = [".html", ".xml", ".md"];
 
-function replaceAll(str: string, search: string, replacement: string): string {
-	let index = str.indexOf(search);
-	while (index != -1) {
-		str = str.replace(search, replacement);
-		index = str.indexOf(search);
-	}
-	return str;
-}
-
-function removeKeepTagsFromString(str: string) {
-	const textWithNoTranslateStartTagReplaced = replaceAll(
-		str,
-		"<keep>",
-		"",
-	);
-	const textWithNoTranslateEndTagReplaced = replaceAll(
-		textWithNoTranslateStartTagReplaced,
-		"</keep>",
-		"",
-	);
-	return textWithNoTranslateEndTagReplaced
-}
 
 // main
 (async () => {
