@@ -7,6 +7,7 @@ This action uses the [DeepL Translate API](https://github.com/DeepLcom/deepl-nod
 😎 Since DeepL API does not officially support markdown tag handling yet, it helps to mitigate some issues that DeepL may have when it comes to markdown documents.
 
 ✨ In v1.0.0, **HTML-like files** such as `.md | .html | .xml` are supported.
+
 ✨ From v2.0.0 onwards, **locale JSON** files are also supported.
 
 ## Inputs
