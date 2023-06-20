@@ -22,7 +22,6 @@ const endTagForNoTranslate = process.env.no_translate_end_tag as string;
 const tempFilePath = "to_translate.txt";
 const fileExtensionsThatAllowForIgnoringBlocks = [".html", ".xml", ".md"];
 
-
 // main
 (async () => {
 	const fileExtension = path.extname(inputFilePath);
@@ -31,38 +30,31 @@ const fileExtensionsThatAllowForIgnoringBlocks = [".html", ".xml", ".md"];
 
 	if (isFileHtmlLike) {
 		let textToBeWrittenToTempFile = "";
-		fs.readFile(inputFilePath, "utf8", async function (err, text) {
-			if (err) {
-				return console.log(err);
-			}
+		const inputText = fs.readFileSync(inputFilePath, "utf8");
+		if (startTagForNoTranslate && endTagForNoTranslate) {
+			const textWithNoTranslateStartTagReplaced = replaceAll(
+				inputText,
+				startTagForNoTranslate,
+				"<keep>",
+			);
+			const textWithNoTranslateEndTagReplaced = replaceAll(
+				textWithNoTranslateStartTagReplaced,
+				endTagForNoTranslate,
+				"</keep>",
+			);
 
-			if (startTagForNoTranslate && endTagForNoTranslate) {
-				const textWithNoTranslateStartTagReplaced = replaceAll(
-					text,
-					startTagForNoTranslate,
-					"<keep>",
+			textToBeWrittenToTempFile = textWithNoTranslateEndTagReplaced;
+		}
+		if (termsToIgnoreForTranslation.length > 0) {
+			termsToIgnoreForTranslation.forEach((term) => {
+				textToBeWrittenToTempFile = textToBeWrittenToTempFile.replace(
+					new RegExp(term, "g"),
+					`<keep>${term}</keep>`,
 				);
-				const textWithNoTranslateEndTagReplaced = replaceAll(
-					textWithNoTranslateStartTagReplaced,
-					endTagForNoTranslate,
-					"</keep>",
-				);
-
-				textToBeWrittenToTempFile = textWithNoTranslateEndTagReplaced;
-			}
-			if (termsToIgnoreForTranslation.length > 0) {
-				termsToIgnoreForTranslation.forEach((term) => {
-					textToBeWrittenToTempFile = textToBeWrittenToTempFile.replace(
-						new RegExp(term, "g"),
-						`<keep>${term}</keep>`,
-					);
-				});
-			}
-			fs.writeFile(tempFilePath, textToBeWrittenToTempFile, function (err) {
-				if (err) return console.log(err);
-				console.log(`Created file to be translated`);
 			});
-		});
+		}
+
+		fs.writeFileSync(tempFilePath, textToBeWrittenToTempFile);
 
 		const tempFileExists = fs.existsSync(tempFilePath);
 		const translateFilePath = tempFileExists ? tempFilePath : inputFilePath;
@@ -90,17 +82,13 @@ const fileExtensionsThatAllowForIgnoringBlocks = [".html", ".xml", ".md"];
 				);
 
 				const translatedText = textResult.text;
-				const resultText = removeKeepTagsFromString(translatedText)
+				const resultText = removeKeepTagsFromString(translatedText);
 
 				const outputFileName = `${outputFileNamePrefix}${targetLang}${fileExtension}`;
-				fs.writeFile(
-					outputFileName,
-					resultText,
-					function (err) {
-						if (err) return console.log(err);
-						console.log(`Translated ${targetLang}`);
-					},
-				);
+				fs.writeFile(outputFileName, resultText, function (err) {
+					if (err) return console.log(err);
+					console.log(`Translated ${targetLang}`);
+				});
 			}
 		});
 	} else if (fileExtension === ".json") {
@@ -147,7 +135,7 @@ const fileExtensionsThatAllowForIgnoringBlocks = [".html", ".xml", ".md"];
 						}
 
 						const translatedText = textResult.text;
-						const resultText = removeKeepTagsFromString(translatedText)
+						const resultText = removeKeepTagsFromString(translatedText);
 						translatedResults[targetLang]![key] = resultText;
 					}
 				}
