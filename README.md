@@ -18,7 +18,6 @@ This action uses the [DeepL Translate API](https://github.com/DeepLcom/deepl-nod
 | `target_languages`    | Target languages to translate to. Refer to [DeepL docs for language codes](https://www.deepl.com/docs-api/translate-text).                 |   yes    |
 | `input_file_path`     | Path of the file you want to translate. Accepts `.html, .xml, .md, .json`           |   yes    |
 | `output_file_name_prefix` | Prefix of the output file name, including folder name |   no     |
-| `ignore_terms`        | Terms to ignore when translating                 |   no     |
 | `no_translate_start_tag` | Start tag to ignore when translating in the case of HTML-like files such as `.html, .xml, .md`           |   no     |
 | `no_translate_end_tag`   | End tag to ignore when translating in the case of HTML-like files such as `.html, .xml, .md`.                |   no     |
 
@@ -38,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: DeepL Translate Github Action
-        uses: lyqht/deepl-translate-github-action@v1.0.0
+        uses: lyqht/deepl-translate-github-action@v2.0.0
         with:
           target_languages: zh,ja
           input_file_path: docs/simple/original.md
@@ -64,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: DeepL Translate Github Action
-        uses: lyqht/deepl-translate-github-action@v2.0.0-alpha
+        uses: lyqht/deepl-translate-github-action@v2.0.0
         with:
           target_languages: fr,ja
           input_file_path: locales/en.json
