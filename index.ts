@@ -5,7 +5,6 @@ import { removeKeepTagsFromString, replaceAll } from "./utils";
 
 const authKey = process.env.deepl_api_key as string;
 const translator = new deepl.Translator(authKey);
-const targetLanguages = process.env.target_languages?.split(",") as string[];
 const inputFilePath = path.join(
 	process.env.GITHUB_WORKSPACE as string,
 	process.env.input_file_path as string,
@@ -22,6 +21,13 @@ const fileExtensionsThatAllowForIgnoringBlocks = [".html", ".xml", ".md"];
 
 // main
 (async () => {
+	const targetLanguages =
+	process.env.target_languages === "all"
+		? (await translator.getTargetLanguages()).map((lang) => lang.code)
+		: process.env.target_languages !== undefined
+		? (process.env.target_languages?.split(",") as string[])
+		: [];
+		
 	const fileExtension = path.extname(inputFilePath);
 	const isFileHtmlLike =
 		fileExtensionsThatAllowForIgnoringBlocks.includes(fileExtension);
