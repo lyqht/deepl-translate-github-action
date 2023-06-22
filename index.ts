@@ -19,7 +19,7 @@ const termsToIgnoreForTranslation =
 const startTagForNoTranslate = process.env.no_translate_start_tag as string;
 const endTagForNoTranslate = process.env.no_translate_end_tag as string;
 
-const tempFilePath = "to_translate.txt";
+const tempFilePath = path.join(process.env.GITHUB_WORKSPACE as string, "to_translate.txt");
 const fileExtensionsThatAllowForIgnoringBlocks = [".html", ".xml", ".md"];
 
 // main
@@ -54,18 +54,20 @@ const fileExtensionsThatAllowForIgnoringBlocks = [".html", ".xml", ".md"];
 			});
 		}
 
+		console.info("textToBeWrittenToTempFile: ", textToBeWrittenToTempFile)
+
 		fs.writeFileSync(tempFilePath, textToBeWrittenToTempFile);
 
 		const tempFileExists = fs.existsSync(tempFilePath);
 		const translateFilePath = tempFileExists ? tempFilePath : inputFilePath;
 
-		console.log(
+		console.info(
 			`Translating the input file into ${targetLanguages.length} languages...`,
 		);
 
 		fs.readFile(translateFilePath, "utf8", async function (err, text) {
 			if (err) {
-				return console.log(err);
+				return console.info(err);
 			}
 
 			for (const targetLanguage of targetLanguages) {
@@ -86,15 +88,15 @@ const fileExtensionsThatAllowForIgnoringBlocks = [".html", ".xml", ".md"];
 
 				const outputFileName = `${outputFileNamePrefix}${targetLang}${fileExtension}`;
 				fs.writeFile(outputFileName, resultText, function (err) {
-					if (err) return console.log(err);
-					console.log(`Translated ${targetLang}`);
+					if (err) return console.info(err);
+					console.info(`Translated ${targetLang}`);
 				});
 			}
 		});
 	} else if (fileExtension === ".json") {
 		fs.readFile(inputFilePath, "utf8", async (err, jsonString) => {
 			if (err) {
-				console.log("Error reading file", err);
+				console.info("Error reading file", err);
 				return;
 			}
 
@@ -113,7 +115,7 @@ const fileExtensionsThatAllowForIgnoringBlocks = [".html", ".xml", ".md"];
 						(match) => `<keep>${match}</keep>`,
 					);
 
-					console.log(
+					console.info(
 						`Translating the input file into ${targetLanguages.length} languages...`,
 					);
 
@@ -145,12 +147,12 @@ const fileExtensionsThatAllowForIgnoringBlocks = [".html", ".xml", ".md"];
 					const outputFileName = `${outputFileNamePrefix}${targetLang}${fileExtension}`;
 					const resultJson = JSON.stringify(translatedResults[targetLang]);
 					fs.writeFile(outputFileName, resultJson, function (err) {
-						if (err) return console.log(err);
-						console.log(`Translated ${targetLang}`);
+						if (err) return console.info(err);
+						console.info(`Translated ${targetLang}`);
 					});
 				}
 			} catch (err) {
-				console.log("Error parsing JSON string", err);
+				console.info("Error parsing JSON string", err);
 			}
 		});
 	}
