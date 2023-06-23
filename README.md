@@ -21,7 +21,7 @@ This action uses the [DeepL Translate API](https://github.com/DeepLcom/deepl-nod
 | `no_translate_start_tag`  | Start tag to ignore when translating in the case of HTML-like files such as `.html, .xml, .md`                                                                                                    |    no    |
 | `no_translate_end_tag`    | End tag to ignore when translating in the case of HTML-like files such as `.html, .xml, .md`.                                                                                                     |    no    |
 
-## Example usage & demo
+## Example usage
 
 ### For `.md`, `.html`, `.xml` input
 
@@ -47,8 +47,6 @@ jobs:
 
 With this workflow, you will get `docs/simple/zh.md` and `docs/simple/ja.md`
 
-For a demo, refer to the [deepl-demo](https://github.com/lyqht/deepl-demo) repository.
-
 ### For locale json
 
 ```yaml
@@ -73,7 +71,15 @@ jobs:
 
 With this workflow, you will get `locales/fr.json`, `locales/ja.json`.
 
-For a demo, refer to [nuxt3-app-vue-i18n](https://github.com/lyqht/nuxt3-app-vue-i18n) repository, with a deployed app.
+## Demo
+
+- For a simple demo of translating HTML-like text files, refer to the [deepl-demo](https://github.com/lyqht/deepl-demo) repository.
+- For a more advanced demo of translating both the `README.md` and `locale/x.json`, refer to [nuxt3-app-vue-i18n](https://github.com/lyqht/nuxt3-app-vue-i18n) repository, with a deployed app.
+
+When the github action runs, it will produce commits like the following based on your input paths.
+
+![CleanShot 2023-06-23 at 10 44 40](https://github.com/lyqht/deepl-translate-github-action/assets/35736525/46de3b8a-11e1-400d-9c0d-7732ecaac958)
+
 
 
 ## FAQ
