@@ -1,14 +1,16 @@
 # DeepL Translate Github Action
 
-This action uses the [DeepL Translate API](https://github.com/DeepLcom/deepl-node) to translate text files in your repository to your target languages. The output will follow the file extension of the given input file.
+> 🏆 v1.0.0 of this github action was awarded the [Grand Prize of Maintainer must-haves category in the GitHub + DEV 2023 Hackathon](https://dev.to/devteam/github-dev-2023-hackathon-winners-announced-236o)
 
-## Features
+## Intro
 
-😎 Since DeepL API does not officially support markdown tag handling yet, it helps to mitigate some issues that DeepL may have when it comes to markdown documents.
+This action uses the [DeepL Translate API](https://github.com/DeepLcom/deepl-node) to translate files in your repository to any target languages supported by DeepL. 
 
-✨ In v1.0.0, **HTML-like files** such as `.md | .html | .xml` are supported.
+The output will follow the file extension of the given input file.
 
-✨ From v2.0.0 onwards, **locale JSON** files are also supported.
+- In v1.0.0, **HTML-like files** such as `.md | .html | .xml` are supported.
+- From v2.0.0 onwards, **locale JSON** files are also supported.
+- Since DeepL API does not officially support markdown tag handling yet, this github action helps to mitigate some issues that DeepL may have when it comes to markdown documents.
 
 ## Inputs
 
