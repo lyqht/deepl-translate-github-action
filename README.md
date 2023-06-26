@@ -88,7 +88,7 @@ When the github action runs, it will produce commits like the following based on
 
 <details><summary>How to get DeepL API Token</summary>
 
-First, you need to [sign up for a DeepL account](https://www.deepl.com/). Then you can go to https://www.deepl.com/account/summary and retrieve your token there.
+First, you need to [sign up for the free DeepL API plan](https://www.deepl.com/docs-api). Then you can go to https://www.deepl.com/account/summary and retrieve your token there.
 
 ![Screenshot of where the auth key is located on the website](DeepL_API_Auth_Key_Example.png)
 
