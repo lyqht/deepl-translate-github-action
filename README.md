@@ -100,3 +100,9 @@ You have to set the workflow permissions under Repository Settings > Actions > W
 ![](workflow_permissions_screenshot.png)
 
 </details>
+
+<details><summary>The script is cool but I don't want to use a GitHub action. Can I run it locally?</summary>
+
+Well, you're in luck! Refer to `local.ts` and modify your env variables accordingly.
+
+</details>
