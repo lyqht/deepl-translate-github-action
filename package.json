@@ -5,7 +5,9 @@
   "author": "Estee <estee.tsw@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node index.ts"
+    "start": "ts-node index.ts",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "deepl-node": "^1.9.0"
@@ -13,6 +15,7 @@
   "devDependencies": {
     "@types/node": "^20.1.4",
     "ts-node": "^10.9.1",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "vitest": "^0.32.4"
   }
 }
