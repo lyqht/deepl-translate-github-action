@@ -11,13 +11,17 @@ const endTagForNoTranslate = "your_end_tag_here";
 
 const tempFilePath = path.join("/your/temp/file/path/here", "to_translate.txt");
 const fileExtensionsThatAllowForIgnoringBlocks = [".html", ".xml", ".md"];
+const targetLanguages = ["ja"] as deepl.TargetLanguageCode[];
 
-(async () => {await main({
-	translator,
-	inputFilePath,
-	outputFileNamePrefix,
-	startTagForNoTranslate,
-	endTagForNoTranslate,
-	tempFilePath,
-	fileExtensionsThatAllowForIgnoringBlocks,
-})})
+async () => {
+	await main({
+		translator,
+		inputFilePath,
+		outputFileNamePrefix,
+		startTagForNoTranslate,
+		endTagForNoTranslate,
+		tempFilePath,
+		fileExtensionsThatAllowForIgnoringBlocks,
+		targetLanguages,
+	});
+};

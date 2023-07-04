@@ -7,7 +7,9 @@ function replaceAll(str: string, search: string, replacement: string): string {
 	return str;
 }
 
-function removeKeepTagsFromString(str: string) {
+function removeKeepTagsFromString(str: string): string {
+	if (!str.includes('<keep>')) return str
+
 	const textWithNoTranslateStartTagReplaced = replaceAll(
 		str,
 		"<keep>",

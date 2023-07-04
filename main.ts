@@ -1,16 +1,20 @@
-import * as deepl from "deepl-node";
+import type { TargetLanguageCode, Translator, TextResult } from "deepl-node";
 import fs from "fs";
 import path from "path";
 import { removeKeepTagsFromString, replaceAll } from "./utils";
 
-export interface MainFunctionParams {
-	translator: deepl.Translator;
+interface HTMLlikeParams {
+	startTagForNoTranslate?: string;
+	endTagForNoTranslate?: string;
+}
+
+export interface MainFunctionParams extends HTMLlikeParams {
+	translator: Translator;
 	inputFilePath: string;
 	outputFileNamePrefix: string;
-	startTagForNoTranslate: string;
-	endTagForNoTranslate: string;
 	tempFilePath: string;
 	fileExtensionsThatAllowForIgnoringBlocks: string[];
+	targetLanguages: TargetLanguageCode[];
 }
 
 export async function main(params: MainFunctionParams) {
@@ -22,14 +26,8 @@ export async function main(params: MainFunctionParams) {
 		endTagForNoTranslate,
 		tempFilePath,
 		fileExtensionsThatAllowForIgnoringBlocks,
+		targetLanguages,
 	} = params;
-	const targetLanguages =
-		process.env.target_languages === "all"
-			? (await translator.getTargetLanguages()).map((lang) => lang.code)
-			: process.env.target_languages !== undefined
-			? (process.env.target_languages?.split(",") as string[])
-			: [];
-
 	const fileExtension = path.extname(inputFilePath);
 	const isFileHtmlLike =
 		fileExtensionsThatAllowForIgnoringBlocks.includes(fileExtension);
@@ -62,17 +60,17 @@ export async function main(params: MainFunctionParams) {
 		console.debug("tempFileExists: ", tempFileExists);
 		const translateFilePath = tempFileExists ? tempFilePath : inputFilePath;
 
-		console.info(
-			`Translating the input file into ${targetLanguages.length} languages...`,
-		);
-
 		fs.readFile(translateFilePath, "utf8", async function (err, text) {
 			if (err) {
 				return console.info(err);
 			}
 
+			console.info(
+				`Translating the input file into ${targetLanguages.length} languages...`,
+			);
+
 			for (const targetLanguage of targetLanguages) {
-				const targetLang = targetLanguage as deepl.TargetLanguageCode;
+				const targetLang = targetLanguage as TargetLanguageCode;
 				const textResult = await translator.translateText(
 					text,
 					null,
@@ -85,6 +83,11 @@ export async function main(params: MainFunctionParams) {
 				);
 
 				const translatedText = textResult.text;
+
+				if (translatedText === undefined) {
+					console.error(`got undefined translatedText, skipping for ${targetLang}`)
+					return
+				}
 				const resultText = removeKeepTagsFromString(translatedText);
 
 				const outputFileName = `${outputFileNamePrefix}${targetLang}${fileExtension}`;
@@ -106,7 +109,7 @@ export async function main(params: MainFunctionParams) {
 				const keys = Object.keys(inputJson);
 
 				const translatedResults: Partial<
-					Record<deepl.TargetLanguageCode, Record<string, string>>
+					Record<TargetLanguageCode, Record<string, string>>
 				> = {};
 				for (const key of keys) {
 					const value = inputJson[key] as string;
@@ -121,7 +124,7 @@ export async function main(params: MainFunctionParams) {
 					);
 
 					for (const targetLanguage of targetLanguages) {
-						const targetLang = targetLanguage as deepl.TargetLanguageCode;
+						const targetLang = targetLanguage as TargetLanguageCode;
 						const textResult = (await translator.translateText(
 							textToBeTranslated,
 							null,
@@ -131,7 +134,7 @@ export async function main(params: MainFunctionParams) {
 								tagHandling: "xml",
 								ignoreTags: ["keep"],
 							},
-						)) as deepl.TextResult;
+						)) as TextResult;
 
 						if (!translatedResults[targetLang]) {
 							translatedResults[targetLang] = {};
@@ -144,7 +147,7 @@ export async function main(params: MainFunctionParams) {
 				}
 
 				for (const targetLanguage of targetLanguages) {
-					const targetLang = targetLanguage as deepl.TargetLanguageCode;
+					const targetLang = targetLanguage as TargetLanguageCode;
 					const outputFileName = `${outputFileNamePrefix}${targetLang}${fileExtension}`;
 					const resultJson = JSON.stringify(translatedResults[targetLang]);
 					fs.writeFile(outputFileName, resultJson, function (err) {
