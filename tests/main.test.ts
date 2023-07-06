@@ -1,6 +1,6 @@
 import type { SpyInstance } from "vitest";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
-import { MainFunctionParams, main } from "./main";
+import { MainFunctionParams, main } from "../src/main";
 import fs from "fs";
 
 vi.mock("deepl-node", () => ({

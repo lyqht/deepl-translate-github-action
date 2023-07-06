@@ -1,7 +1,7 @@
 import type { TargetLanguageCode, Translator, TextResult } from "deepl-node";
 import fs from "fs";
 import path from "path";
-import { removeKeepTagsFromString, replaceAll } from "./utils";
+import { TranslatedJSONResults, removeKeepTagsFromString, replaceAll, translateRecursive } from "./utils";
 
 interface HTMLlikeParams {
 	startTagForNoTranslate?: string;
@@ -106,45 +106,8 @@ export async function main(params: MainFunctionParams) {
 
 			try {
 				const inputJson = JSON.parse(jsonString);
-				const keys = Object.keys(inputJson);
-
-				const translatedResults: Partial<
-					Record<TargetLanguageCode, Record<string, string>>
-				> = {};
-				for (const key of keys) {
-					const value = inputJson[key] as string;
-					const termRegex = /{[^{}]+}/g;
-					const textToBeTranslated = value.replace(
-						termRegex,
-						(match) => `<keep>${match}</keep>`,
-					);
-
-					console.info(
-						`Translating the input file into ${targetLanguages.length} languages...`,
-					);
-
-					for (const targetLanguage of targetLanguages) {
-						const targetLang = targetLanguage as TargetLanguageCode;
-						const textResult = (await translator.translateText(
-							textToBeTranslated,
-							null,
-							targetLang,
-							{
-								preserveFormatting: true,
-								tagHandling: "xml",
-								ignoreTags: ["keep"],
-							},
-						)) as TextResult;
-
-						if (!translatedResults[targetLang]) {
-							translatedResults[targetLang] = {};
-						}
-
-						const translatedText = textResult.text;
-						const resultText = removeKeepTagsFromString(translatedText);
-						translatedResults[targetLang]![key] = resultText;
-					}
-				}
+				const translatedRecords = {} as TranslatedJSONResults;
+				const translatedResults = await translateRecursive(inputJson, targetLanguages, translator, translatedRecords);
 
 				for (const targetLanguage of targetLanguages) {
 					const targetLang = targetLanguage as TargetLanguageCode;

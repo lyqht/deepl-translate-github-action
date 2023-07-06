@@ -1,6 +1,6 @@
 import * as deepl from "deepl-node";
 import path from "path";
-import { main } from "./main";
+import { main } from "../src/main";
 
 const authKey = "your_auth_key_here";
 const translator = new deepl.Translator(authKey);
