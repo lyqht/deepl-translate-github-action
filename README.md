@@ -6,7 +6,7 @@ This action uses the [DeepL Translate API](https://github.com/DeepLcom/deepl-nod
 
 😎 Since DeepL API does not officially support markdown tag handling yet, it helps to mitigate some issues that DeepL may have when it comes to markdown documents.
 
-✨ In v1.0.0, **HTML-like files** such as `.md | .html | .xml` are supported.
+✨ In v1.0.0, **common text files** such as `.md | .html | .xml | .txt` are supported.
 
 ✨ From v2.0.0 onwards, **locale JSON** files are also supported.
 
@@ -16,14 +16,14 @@ This action uses the [DeepL Translate API](https://github.com/DeepLcom/deepl-nod
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------: |
 | `deepl_api_key`           | API Key for DeepL API                                                                                                                                                                             |   yes    |
 | `target_languages`        | Target languages to translate to. Refer to [DeepL docs for language codes](https://www.deepl.com/docs-api/translate-text). You can also input `all` for all target languages that DeepL supports. |   yes    |
-| `input_file_path`         | Path of the file you want to translate. Accepts `.html, .xml, .md, .json`                                                                                                                         |   yes    |
+| `input_file_path`         | Path of the file you want to translate. Accepts `.html, .xml, .md, .txt, .json`                                                                                                                         |   yes    |
 | `output_file_name_prefix` | Prefix of the output file name, including folder name                                                                                                                                             |    no    |
 | `no_translate_start_tag`  | Start tag to ignore when translating in the case of HTML-like files such as `.html, .xml, .md`                                                                                                    |    no    |
 | `no_translate_end_tag`    | End tag to ignore when translating in the case of HTML-like files such as `.html, .xml, .md`.                                                                                                     |    no    |
 
 ## Example usage & demo
 
-### For `.md`, `.html`, `.xml` input
+### For standard text files such as `.md`, `.html`, `.xml`, `.txt`
 
 ```yaml
 name: Translate documents from docs/simple folder

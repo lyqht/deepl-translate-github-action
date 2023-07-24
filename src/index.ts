@@ -20,7 +20,7 @@ const tempFilePath = path.join(
 	process.env.GITHUB_WORKSPACE as string,
 	"to_translate.txt",
 );
-const fileExtensionsThatAllowForIgnoringBlocks = [".html", ".xml", ".md"];
+const fileExtensionsThatAllowForIgnoringBlocks = [".html", ".xml", ".md", ".txt"];
 
 async () => {
 	const targetLanguages =
