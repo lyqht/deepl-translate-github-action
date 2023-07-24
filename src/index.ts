@@ -22,7 +22,7 @@ const tempFilePath = path.join(
 );
 const fileExtensionsThatAllowForIgnoringBlocks = [".html", ".xml", ".md", ".txt"];
 
-async () => {
+(async () => {
 	const targetLanguages =
 		process.env.target_languages === "all"
 			? (await translator.getTargetLanguages()).map((lang) => lang.code) as TargetLanguageCode[]
@@ -40,4 +40,4 @@ async () => {
 		fileExtensionsThatAllowForIgnoringBlocks,
 		targetLanguages,
 	});
-};
+})();
