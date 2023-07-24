@@ -7,6 +7,7 @@
   "scripts": {
     "start": "ts-node index.ts",
     "test": "vitest",
+    "local": "ts-node playground/local.ts",
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
