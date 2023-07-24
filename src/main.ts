@@ -93,6 +93,10 @@ export async function main(params: MainFunctionParams) {
 				const resultText = removeKeepTagsFromString(translatedText);
 
 				const outputFileName = buildOutputFileName(targetLang, fileExtension, outputFileNamePrefix, outputFileNamePattern);
+				const outputFolderPath = path.dirname(outputFileName);
+				if (!fs.existsSync(outputFolderPath)) {
+					fs.mkdirSync(outputFolderPath, { recursive: true });
+				}
 				fs.writeFile(outputFileName, resultText, function (err) {
 					if (err) return console.info(err);
 					console.info(`Translated ${targetLang}`);
@@ -115,6 +119,10 @@ export async function main(params: MainFunctionParams) {
 					const targetLang = targetLanguage as TargetLanguageCode;
 					const outputFileName = buildOutputFileName(targetLang, fileExtension, outputFileNamePrefix, outputFileNamePattern);
 					const resultJson = JSON.stringify(translatedResults[targetLang]);
+					const outputFolderPath = path.dirname(outputFileName);
+					if (!fs.existsSync(outputFolderPath)) {
+						fs.mkdirSync(outputFolderPath, { recursive: true });
+					}
 					fs.writeFile(outputFileName, resultJson, function (err) {
 						if (err) return console.info(err);
 						console.info(`Translated ${targetLang}`);
