@@ -4,12 +4,13 @@ import { main } from "../src/main";
 
 const authKey = process.env.deepl_api_key as string;
 const translator = new deepl.Translator(authKey);
-const inputFilePath = "playground/nested.json";
-const outputFileNamePrefix = "playground/";
+const playgroundPath = "playground"
+const inputFilePath = path.join(playgroundPath, "simple.txt");
+const outputFileNamePrefix = path.join(playgroundPath, "translated_simple_");
 const startTagForNoTranslate = "<!-- keep -->";
 const endTagForNoTranslate = "<!-- /keep -->";
 
-const tempFilePath = path.join(outputFileNamePrefix, "to_translate.txt");
+const tempFilePath = path.join(playgroundPath, "to_translate.txt");
 const fileExtensionsThatAllowForIgnoringBlocks = [".html", ".xml", ".md", ".txt"];
 const targetLanguages = ["ja"] as deepl.TargetLanguageCode[];
 
