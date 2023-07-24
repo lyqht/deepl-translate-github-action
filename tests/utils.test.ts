@@ -1,5 +1,5 @@
-import { describe, expect, test } from "vitest";
-import { removeKeepTagsFromString, replaceAll, replaceParameterStringsInJSONValueWithKeepTags } from '../src/utils'
+import { describe, expect, test, vi } from "vitest";
+import { applyRecursive, removeKeepTagsFromString, replaceAll, replaceParameterStringsInJSONValueWithKeepTags } from '../src/utils'
 
 describe('replaceAll', () => {
   test('should replace all occurrences of a substring in a string', () => {
@@ -65,3 +65,47 @@ describe('replaceParameterStringsInJSONValueWithKeepTags', () => {
   });
 });
 
+describe('applyRecursive', () => {
+  test('should append "translated" to all string values', async () => {
+    const input = {
+        a: {
+            b: "test",
+            c: "test2"
+        },
+        d: "test3"
+    };
+    const expected = {
+        a: {
+            b: "testtranslated",
+            c: "test2translated"
+        },
+        d: "test3translated"
+    };
+    const operation = async (value: string, path: string[]) => {
+        let obj = input;
+        for (let key of path) {
+            if(typeof obj[key] === "string") {
+                obj[key] += "translated";
+            }
+            obj = obj[key];
+        }
+    };
+
+    await applyRecursive(input, [], operation, []);
+
+    expect(input).toEqual(expected);
+});
+
+
+  test('should pass correct arguments to operation', async () => {
+    const input = { a: "test" };
+    const operationArgs = [1, 2, 3];
+    const operation = vi.fn();
+
+    await applyRecursive(input, [], operation, operationArgs);
+
+    expect(operation).toHaveBeenCalledWith("test", ["a"], ...operationArgs);
+  });
+
+  // Here you can add more test cases according to your requirements
+});

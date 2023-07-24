@@ -35,30 +35,38 @@ type TranslatedJSONResults = Record<
 	PossibleRecursive<Record<string, string>>
 >;
 
+export const applyRecursive = async (
+	inputJson: Record<string, any>,
+	path: string[] = [],
+	operation: Function,
+	operationArgs: any[],
+) => {
+	const keys = Object.keys(inputJson);
+
+	for (const key of keys) {
+		const newPath = [...path, key];
+
+		if (typeof inputJson[key] === "object") {
+			await applyRecursive(inputJson[key], newPath, operation, operationArgs);
+		} else {
+			await operation(inputJson[key], newPath, ...operationArgs);
+		}
+	}
+};
+
 const translateRecursive = async (
 	inputJson: Record<string, any>,
 	targetLanguages: TargetLanguageCode[],
 	translator: Translator,
 	translatedResults: TranslatedJSONResults,
-	path: string[] = [], // new argument to keep track of the object's nested path
 ) => {
-	const keys = Object.keys(inputJson);
-
-	for (const key of keys) {
-		let newPath = [...path, key];
-
-		if (typeof inputJson[key] === "object") {
-			await translateRecursive(
-				inputJson[key],
-				targetLanguages,
-				translator,
-				translatedResults,
-				newPath, // pass the extended path when the current key is an object
-			);
-			continue;
-		}
-
-		const value = inputJson[key];
+	const translate = async (
+		value: string,
+		path: string[],
+		targetLanguages: TargetLanguageCode[],
+		translator: Translator,
+		translatedResults: TranslatedJSONResults,
+	) => {
 		const textToBeTranslated =
 			replaceParameterStringsInJSONValueWithKeepTags(value);
 
@@ -82,23 +90,25 @@ const translateRecursive = async (
 			const resultText = removeKeepTagsFromString(translatedText);
 
 			// Assign the translated text to its original position in object
-			newPath.reduce<Record<string, string | Record<string, string>>>(
-				(prev, curr, idx) => {
-					if (idx === newPath.length - 1) {
-						prev[curr] = resultText;
-					} else if (!prev[curr]) {
-						prev[curr] = {};
+			let currentKey: Record<string, any> = translatedResults[targetLanguage];
+			for (let i = 0; i < path.length; i++) {
+				if (i === path.length - 1) {
+					currentKey[path[i]] = resultText;
+				} else {
+					if (!currentKey[path[i]]) {
+						currentKey[path[i]] = {};
 					}
-
-					return prev[curr] as Record<string, string | Record<string, string>>;
-				},
-				translatedResults[targetLanguage] as Record<
-					string,
-					string | Record<string, string>
-				>,
-			);
+					currentKey = currentKey[path[i]];
+				}
+			}
 		}
-	}
+	};
+
+	await applyRecursive(inputJson, [], translate, [
+		targetLanguages,
+		translator,
+		translatedResults,
+	]);
 
 	return translatedResults;
 };
