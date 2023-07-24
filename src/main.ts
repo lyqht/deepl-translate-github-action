@@ -1,7 +1,7 @@
-import type { TargetLanguageCode, Translator, TextResult } from "deepl-node";
+import type { TargetLanguageCode, Translator } from "deepl-node";
 import fs from "fs";
 import path from "path";
-import { TranslatedJSONResults, removeKeepTagsFromString, replaceAll, translateRecursive } from "./utils";
+import { TranslatedJSONResults, buildOutputFileName, removeKeepTagsFromString, replaceAll, translateRecursive } from "./utils";
 
 interface HTMLlikeParams {
 	startTagForNoTranslate?: string;
@@ -12,6 +12,7 @@ export interface MainFunctionParams extends HTMLlikeParams {
 	translator: Translator;
 	inputFilePath: string;
 	outputFileNamePrefix: string;
+	outputFileNamePattern?: string;
 	tempFilePath: string;
 	fileExtensionsThatAllowForIgnoringBlocks: string[];
 	targetLanguages: TargetLanguageCode[];
@@ -22,6 +23,7 @@ export async function main(params: MainFunctionParams) {
 		translator,
 		inputFilePath,
 		outputFileNamePrefix,
+		outputFileNamePattern,
 		startTagForNoTranslate,
 		endTagForNoTranslate,
 		tempFilePath,
@@ -90,7 +92,7 @@ export async function main(params: MainFunctionParams) {
 				}
 				const resultText = removeKeepTagsFromString(translatedText);
 
-				const outputFileName = `${outputFileNamePrefix}${targetLang}${fileExtension}`;
+				const outputFileName = buildOutputFileName(targetLang, fileExtension, outputFileNamePrefix, outputFileNamePattern);
 				fs.writeFile(outputFileName, resultText, function (err) {
 					if (err) return console.info(err);
 					console.info(`Translated ${targetLang}`);
@@ -111,7 +113,7 @@ export async function main(params: MainFunctionParams) {
 
 				for (const targetLanguage of targetLanguages) {
 					const targetLang = targetLanguage as TargetLanguageCode;
-					const outputFileName = `${outputFileNamePrefix}${targetLang}${fileExtension}`;
+					const outputFileName = buildOutputFileName(targetLang, fileExtension, outputFileNamePrefix, outputFileNamePattern);
 					const resultJson = JSON.stringify(translatedResults[targetLang]);
 					fs.writeFile(outputFileName, resultJson, function (err) {
 						if (err) return console.info(err);

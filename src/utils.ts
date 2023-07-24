@@ -113,10 +113,22 @@ const translateRecursive = async (
 	return translatedResults;
 };
 
+function buildOutputFileName(
+	targetLang: string,
+	fileExtension?: string,
+	outputFileNamePrefix?: string,
+	outputFileNamePattern?: string,
+) {
+	return outputFileNamePattern
+		? `${outputFileNamePattern.replace("{language}", targetLang)}`
+		: `${outputFileNamePrefix}${targetLang}${fileExtension}`;
+}
+
 export {
 	replaceAll,
 	removeKeepTagsFromString,
 	replaceParameterStringsInJSONValueWithKeepTags,
 	translateRecursive,
+	buildOutputFileName,
 	TranslatedJSONResults,
 };

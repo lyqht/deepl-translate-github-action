@@ -9,9 +9,13 @@ inputs:
   input_file_path:
     description: "Path of the file you want to translate"
     required: true
+  output_file_name_pattern:
+    description: "Pattern of the output file name, including the folder name"
+    required: false
   output_file_name_prefix:
     description: "Prefix of the output file name, including the folder name"
     required: false
+    default: translated_
   deepl_api_key:
     description: "API Key for DeepL API"
     required: true
