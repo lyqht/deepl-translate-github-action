@@ -44,6 +44,7 @@ runs:
       target_languages: ${{ inputs.target_languages }}
       input_file_path: ${{ inputs.input_file_path }}
       output_file_name_prefix: ${{ inputs.output_file_name_prefix }}
+      output_file_name_pattern: ${{ inputs.output_file_name_pattern }}
       deepl_api_key: ${{ inputs.deepl_api_key }}
       ignore_terms: ${{ inputs.ignore_terms }}
       no_translate_start_tag: ${{ inputs.no_translate_start_tag }}
