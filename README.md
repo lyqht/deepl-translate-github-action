@@ -1,10 +1,11 @@
 # DeepL Translate Github Action
 
-This action uses the [DeepL Translate API](https://github.com/DeepLcom/deepl-node) to translate text files in your repository to your target languages. The output will follow the file extension of the given input file.
+> 🏆 v1.0.0 of this github action was awarded the [Grand Prize of Maintainer must-haves category in the GitHub + DEV 2023 Hackathon](https://dev.to/devteam/github-dev-2023-hackathon-winners-announced-236o)
 
-## Features
+## Intro
 
-😎 Since DeepL API does not officially support markdown tag handling yet, it helps to mitigate some issues that DeepL may have when it comes to markdown documents.
+This action uses the [DeepL Translate API](https://github.com/DeepLcom/deepl-node) to translate files in your repository to any target languages supported by DeepL. 
+Since DeepL API does not officially support markdown tag handling yet, this github action helps to mitigate some issues that DeepL may have when it comes to `.md` documents.
 
 ✨ In v1.0.0, **common text files** such as `.md | .html | .xml | .txt` are supported.
 
@@ -24,7 +25,7 @@ This action uses the [DeepL Translate API](https://github.com/DeepLcom/deepl-nod
 | `no_translate_start_tag`   | Start tag to ignore when translating in the case of HTML-like files such as `.html, .xml, .md`                                                                                                    |    no    |
 | `no_translate_end_tag`     | End tag to ignore when translating in the case of HTML-like files such as `.html, .xml, .md`.                                                                                                     |    no    |
 
-## Example usage & demo
+## Example usage
 
 ### For standard text files such as `.md`, `.html`, `.xml`, `.txt`
 
@@ -50,8 +51,6 @@ jobs:
 
 With this workflow, you will get `docs/simple/zh.md` and `docs/simple/ja.md`
 
-For a demo, refer to the [deepl-demo](https://github.com/lyqht/deepl-demo) repository.
-
 ### For locale json
 
 ```yaml
@@ -76,7 +75,15 @@ jobs:
 
 With this workflow, you will get `locales/fr.json`, `locales/ja.json`.
 
-For a demo, refer to [nuxt3-app-vue-i18n](https://github.com/lyqht/nuxt3-app-vue-i18n) repository, with a deployed app.
+## Demo
+
+- For a simple demo of translating HTML-like text files, refer to the [deepl-demo](https://github.com/lyqht/deepl-demo) repository.
+- For a more advanced demo of translating both the `README.md` and `locale/x.json`, refer to [nuxt3-app-vue-i18n](https://github.com/lyqht/nuxt3-app-vue-i18n) repository, with a deployed app.
+
+When the github action runs, it will produce commits like the following based on your input paths.
+
+![CleanShot 2023-06-23 at 10 44 40](https://github.com/lyqht/deepl-translate-github-action/assets/35736525/46de3b8a-11e1-400d-9c0d-7732ecaac958)
+
 
 ### For nested locale JSON
 
@@ -108,7 +115,7 @@ For a demo, refer to [refine-i18n-react](https://github.com/lyqht/refine-i18n-re
 
 <details><summary>How to get DeepL API Token</summary>
 
-First, you need to [sign up for a DeepL account](https://www.deepl.com/). Then you can go to https://www.deepl.com/account/summary and retrieve your token there.
+First, you need to [sign up for the free DeepL API plan](https://www.deepl.com/docs-api). Then you can go to https://www.deepl.com/account/summary and retrieve your token there.
 
 ![Screenshot of where the auth key is located on the website](DeepL_API_Auth_Key_Example.png)
 
