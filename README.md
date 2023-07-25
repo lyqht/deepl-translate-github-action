@@ -8,7 +8,9 @@ This action uses the [DeepL Translate API](https://github.com/DeepLcom/deepl-nod
 
 ✨ In v1.0.0, **common text files** such as `.md | .html | .xml | .txt` are supported.
 
-✨ From v2.0.0 onwards, **locale JSON** files are also supported.
+✨ From v2.0.0 onwards, flat **locale JSON** files are also supported.
+
+✨ From v2.1.0 onwards, nested **locale JSON** files are also supported.
 
 ## Inputs
 
@@ -75,6 +77,32 @@ jobs:
 With this workflow, you will get `locales/fr.json`, `locales/ja.json`.
 
 For a demo, refer to [nuxt3-app-vue-i18n](https://github.com/lyqht/nuxt3-app-vue-i18n) repository, with a deployed app.
+
+### For nested locale JSON
+
+```yaml
+name: Translate locale commons json
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: DeepL Translate Github Action
+        uses: lyqht/deepl-translate-github-action@v2.1.0
+        with:
+          target_languages: fr,ja
+          input_file_path: public/locales/en/common.json
+          output_file_name_pattern: public/locales/{language}/common.json
+          deepl_api_key: ${{ secrets.DEEPL_API_KEY }}
+```
+
+With this workflow, you will get `public/locales/fr/common.json`, `public/locales/ja/common.json`.
+
+For a demo, refer to [refine-i18n-react](https://github.com/lyqht/refine-i18n-react) repository, with a deployed app.
 
 ## FAQ
 
