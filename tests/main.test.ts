@@ -28,7 +28,7 @@ describe("main - HTMLlike files", () => {
 
 	const fakeInputFileFolderPath = "test";
 	const fakeInputFilename = "inputFilePath.md";
-	const fakeOutputFileNamePrefix = `${fakeInputFileFolderPath}/`;
+	const fakeOutputFileNamePattern = `${fakeInputFileFolderPath}/`;
 	const fakeTempFilePath = "to_translate.txt";
 	const fakeReadFileResult = Buffer.from("Your mocked data here");
 
@@ -59,7 +59,7 @@ describe("main - HTMLlike files", () => {
 		const testParams: MainFunctionParams = {
 			translator: mockTranslator,
 			inputFilePath: `${fakeInputFileFolderPath}/${fakeInputFilename}`,
-			outputFileNamePrefix: fakeOutputFileNamePrefix,
+			outputFileNamePrefix: fakeOutputFileNamePattern,
 			tempFilePath: fakeTempFilePath,
 			fileExtensionsThatAllowForIgnoringBlocks: [".html", ".xml", ".md"],
 			targetLanguages: ["de"],
@@ -90,7 +90,7 @@ describe("main - JSON files", () => {
 
 	const fakeInputFileFolderPath = "test";
 	const fakeInputFilename = "inputFilePath.json";
-	const fakeOutputFileNamePrefix = `${fakeInputFileFolderPath}/`;
+	const fakeOutputFileNamePattern = `${fakeInputFileFolderPath}/{language}.json`;
 	const fakeTempFilePath = "to_translate.txt";
 	const testJSON = {
 		welcome: "Welcome, {name}!",
@@ -126,7 +126,7 @@ describe("main - JSON files", () => {
 		const testParams: MainFunctionParams = {
 			translator: mockTranslator,
 			inputFilePath: `${fakeInputFileFolderPath}/${fakeInputFilename}`,
-			outputFileNamePrefix: fakeOutputFileNamePrefix,
+			outputFileNamePattern: fakeOutputFileNamePattern,
 			tempFilePath: fakeTempFilePath,
 			fileExtensionsThatAllowForIgnoringBlocks: [".html", ".xml", ".md"],
 			targetLanguages: ["de"],

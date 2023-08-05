@@ -9,10 +9,6 @@ const inputFilePath = path.join(
 	process.env.GITHUB_WORKSPACE as string,
 	process.env.input_file_path as string,
 );
-const outputFileNamePrefix = path.join(
-	process.env.GITHUB_WORKSPACE as string,
-	process.env.output_file_name_prefix as string,
-) || 'translated_';
 const outputFileNamePattern = path.join(
 	process.env.GITHUB_WORKSPACE as string,
 	process.env.output_file_name_pattern as string,
@@ -37,7 +33,6 @@ const fileExtensionsThatAllowForIgnoringBlocks = [".html", ".xml", ".md", ".txt"
 	await main({
 		translator,
 		inputFilePath,
-		outputFileNamePrefix,
 		outputFileNamePattern,
 		startTagForNoTranslate,
 		endTagForNoTranslate,
