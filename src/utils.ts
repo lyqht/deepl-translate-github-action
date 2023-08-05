@@ -115,13 +115,9 @@ const translateRecursive = async (
 
 function buildOutputFileName(
 	targetLang: string,
-	fileExtension?: string,
-	outputFileNamePrefix?: string,
-	outputFileNamePattern?: string,
+	outputFileNamePattern: string,
 ) {
-	return outputFileNamePattern
-		? `${outputFileNamePattern.replace("{language}", targetLang)}`
-		: `${outputFileNamePrefix}${targetLang}${fileExtension}`;
+	return `${outputFileNamePattern.replace("{language}", targetLang)}`
 }
 
 export {

@@ -11,8 +11,7 @@ interface HTMLlikeParams {
 export interface MainFunctionParams extends HTMLlikeParams {
 	translator: Translator;
 	inputFilePath: string;
-	outputFileNamePrefix: string;
-	outputFileNamePattern?: string;
+	outputFileNamePattern: string;
 	tempFilePath: string;
 	fileExtensionsThatAllowForIgnoringBlocks: string[];
 	targetLanguages: TargetLanguageCode[];
@@ -22,7 +21,6 @@ export async function main(params: MainFunctionParams) {
 	const {
 		translator,
 		inputFilePath,
-		outputFileNamePrefix,
 		outputFileNamePattern,
 		startTagForNoTranslate,
 		endTagForNoTranslate,
@@ -92,7 +90,7 @@ export async function main(params: MainFunctionParams) {
 				}
 				const resultText = removeKeepTagsFromString(translatedText);
 
-				const outputFileName = buildOutputFileName(targetLang, fileExtension, outputFileNamePrefix, outputFileNamePattern);
+				const outputFileName = buildOutputFileName(targetLang, outputFileNamePattern);
 				const outputFolderPath = path.dirname(outputFileName);
 				if (!fs.existsSync(outputFolderPath)) {
 					fs.mkdirSync(outputFolderPath, { recursive: true });
@@ -117,7 +115,7 @@ export async function main(params: MainFunctionParams) {
 
 				for (const targetLanguage of targetLanguages) {
 					const targetLang = targetLanguage as TargetLanguageCode;
-					const outputFileName = buildOutputFileName(targetLang, fileExtension, outputFileNamePrefix, outputFileNamePattern);
+					const outputFileName = buildOutputFileName(targetLang, outputFileNamePattern);
 					const resultJson = JSON.stringify(translatedResults[targetLang]);
 					const outputFolderPath = path.dirname(outputFileName);
 					if (!fs.existsSync(outputFolderPath)) {
