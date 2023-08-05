@@ -20,10 +20,9 @@ Since DeepL API does not officially support markdown tag handling yet, this gith
 | `deepl_api_key`            | API Key for DeepL API                                                                                                                                                                             |   yes    |
 | `target_languages`         | Target languages to translate to. Refer to [DeepL docs for language codes](https://www.deepl.com/docs-api/translate-text). You can also input `all` for all target languages that DeepL supports. |   yes    |
 | `input_file_path`          | Path of the file you want to translate. Accepts `.html, .xml, .md, .txt, .json`                                                                                                                   |   yes    |
-| `output_file_name_pattern` | Output file name pattern. e.g: `public/locales/{language}/common.json` where language is replaced by the target language code                                                                  |    no    |
-| `output_file_name_prefix`  | Used if `output_file_name_pattern` is not given. Prefix of the output file name, including folder name. e.g. `locales/`. If not given, default value is `translated_`                                                                                                                                             |    no    |
-| `no_translate_start_tag`   | Start tag to ignore when translating in the case of HTML-like files such as `.html, .xml, .md`                                                                                                    |    no    |
-| `no_translate_end_tag`     | End tag to ignore when translating in the case of HTML-like files such as `.html, .xml, .md`.                                                                                                     |    no    |
+| `output_file_name_pattern` | Output file name pattern. e.g: `public/locales/{language}/common.json` where language is replaced by the target language code                                                                  |    yes    |
+| `no_translate_start_tag`   | Start tag to ignore when translating in the case of HTML-like files such as `.html, .xml, .md, .txt`                                                                                                    |    no    |
+| `no_translate_end_tag`     | End tag to ignore when translating in the case of HTML-like files such as `.html, .xml, .md, .txt`.                                                                                                     |    no    |
 
 ## Example usage
 
@@ -45,7 +44,7 @@ jobs:
         with:
           target_languages: zh,ja
           input_file_path: docs/simple/original.md
-          output_file_name_prefix: docs/simple/
+          output_file_name_pattern: docs/simple/{language}.md
           deepl_api_key: ${{ secrets.DEEPL_API_KEY }}
 ```
 
@@ -65,11 +64,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: DeepL Translate Github Action
-        uses: lyqht/deepl-translate-github-action@v2.0.0
+        uses: lyqht/deepl-translate-github-action@v2.1.0
         with:
           target_languages: fr,ja
           input_file_path: locales/en.json
-          output_file_name_prefix: locales/
+          output_file_name_pattern: locales/{language}.json
           deepl_api_key: ${{ secrets.DEEPL_API_KEY }}
 ```
 
