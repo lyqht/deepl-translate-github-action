@@ -1,6 +1,6 @@
 {
-  "name": "deepl-demo",
-  "version": "1.0.0",
+  "name": "deepl-translate-github-action",
+  "version": "2.1.1",
   "main": "index.js",
   "author": "Estee <estee.tsw@gmail.com>",
   "license": "MIT",
