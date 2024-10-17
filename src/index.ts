@@ -23,12 +23,16 @@ const tempFilePath = path.join(
 const fileExtensionsThatAllowForIgnoringBlocks = [".html", ".xml", ".md", ".txt"];
 
 (async () => {
-	const targetLanguages =
+	let targetLanguages =
 		process.env.target_languages === "all"
 			? (await translator.getTargetLanguages()).map((lang) => lang.code) as TargetLanguageCode[]
-			: process.env.target_languages !== undefined
-			? (process.env.target_languages?.split(",") as TargetLanguageCode[])
-			: [];
+				: process.env.target_languages !== undefined
+					? (process.env.target_languages?.split(",") as TargetLanguageCode[])
+					: [];
+
+	const excludedLanguages = process.env.excluded_languages?.split(",") as TargetLanguageCode[] || [];
+	
+	targetLanguages = targetLanguages.filter(lang => !excludedLanguages.includes(lang));
 
 	await main({
 		translator,

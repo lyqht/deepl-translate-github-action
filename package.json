@@ -1,6 +1,6 @@
 {
-  "name": "deepl-demo",
-  "version": "1.0.0",
+  "name": "deepl-translate-github-action",
+  "version": "2.1.1",
   "main": "index.js",
   "author": "Estee <estee.tsw@gmail.com>",
   "license": "MIT",
@@ -11,12 +11,12 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "deepl-node": "^1.9.0"
+    "deepl-node": "^1.14.0"
   },
   "devDependencies": {
-    "@types/node": "^20.1.4",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.0.4",
-    "vitest": "^0.32.4"
+    "@types/node": "^22.7.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.3"
   }
 }

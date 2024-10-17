@@ -6,6 +6,9 @@ inputs:
   target_languages:
     description: "Target languages to translate to"
     required: true
+  excluded_languages:
+    description: "Languages to exclude from translation"
+    required: false
   input_file_path:
     description: "Path of the file you want to translate"
     required: true
