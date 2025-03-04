@@ -1,6 +1,7 @@
 import type { SpyInstance } from "vitest";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
-import { MainFunctionParams, main } from "../src/main";
+import type { MainFunctionParams } from "../src/main";
+import { main } from "../src/main";
 import fs from "fs";
 
 vi.mock("deepl-node", () => ({
@@ -59,7 +60,7 @@ describe("main - HTMLlike files", () => {
 		const testParams: MainFunctionParams = {
 			translator: mockTranslator,
 			inputFilePath: `${fakeInputFileFolderPath}/${fakeInputFilename}`,
-			outputFileNamePrefix: fakeOutputFileNamePattern,
+			outputFileNamePattern: fakeOutputFileNamePattern,
 			tempFilePath: fakeTempFilePath,
 			fileExtensionsThatAllowForIgnoringBlocks: [".html", ".xml", ".md"],
 			targetLanguages: ["de"],
